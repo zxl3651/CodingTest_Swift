@@ -15,8 +15,8 @@ func check(_ point: Int) -> Bool {
 func dfs(_ num: Int) {
     if num == N{
         count += 1
+        return
     }
-    
     for i in 0..<N{
         if visited[i] { continue }
         
