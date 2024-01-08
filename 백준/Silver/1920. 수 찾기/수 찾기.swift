@@ -10,10 +10,13 @@ for i in a{
     dic[i] = 1
 }
 
+var answer = ""
+
 for i in find{
     if dic[i] == 1{
-        print(1)
+        answer += "\(1)\n"
     } else {
-        print(0)
+        answer += "\(0)\n"
     }
 }
+print(answer)
