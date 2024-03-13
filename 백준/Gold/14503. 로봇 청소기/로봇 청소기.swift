@@ -14,107 +14,38 @@ for _ in 0..<N {
 var answer = 0
 
 while true {
-    // 후진이 불가능하다면 break
-    
     // 현재 칸이 청소 가능이면 청소
     if arr[r][c] == 0 {
         arr[r][c] = 2
         answer += 1
-        continue
     }
-    // 현재 칸의 주변 4칸이 모두 청소 불가능할때, 바라보는 방향을 유지하고 한 칸 후진 후 다시 반복
-    if !clear() {
-        if d == 0 {
-            let tmp = r + 1
-            if tmp >= N || arr[tmp][c] == 1 {
-                break
-            } else {
-                r += 1
-            }
-        } else if d == 1 {
-            let tmp = c - 1
-            if tmp < 0 || arr[r][tmp] == 1 {
-                break
-            } else {
-                c -= 1
-            }
-        } else if d == 2 {
-            let tmp = r - 1
-            if tmp < 0 || arr[tmp][c] == 1 {
-                break
-            } else {
-                r -= 1
-            }
-        } else {
-            let tmp = c + 1
-            if tmp >= M || arr[r][tmp] == 1 {
-                break
-            } else {
-                c += 1
-            }
-        }
-    }
-    // 현재 칸의 주변 4칸 중 청소 가능하면, 반시계 방향으로 90도 회전
-    else {
-        d -= 1
-        if d < 0 {
-            d = 3
-        }
-        // 그 후, 바라보는 방향 기준 앞쪽이 청소가능하면 한칸 전진 후 다시 반복
-        if d == 0 {
-            let tmp = r - 1
-            if tmp < 0 || arr[tmp][c] != 0 {
-                continue
-            } else {
-                r -= 1
-            }
-        } else if d == 1 {
-            let tmp = c + 1
-            if tmp >= M || arr[r][tmp] != 0 {
-                continue
-            } else {
-                c += 1
-            }
-        } else if d == 2 {
-            let tmp = r + 1
-            if tmp >= N || arr[tmp][c] != 0 {
-                continue
-            } else {
-                r += 1
-            }
-        } else if d == 3 {
-            let tmp = c - 1
-            if tmp < 0 || arr[r][tmp] != 0 {
-                continue
-            } else {
-                c -= 1
-            }
-        }
-    }
-}
-
-func clear() -> Bool {
-    if r - 1 >= 0 {
-        if arr[r-1][c] == 0{
-            return true
-        }
-    }
-    if r + 1 < N {
-        if arr[r+1][c] == 0{
-            return true
-        }
-    }
-    if c - 1 >= 0 {
-        if arr[r][c-1] == 0{
-            return true
+    
+    // 주변 4칸이 청소가능할때, 방향을 90도 반시계방향으로 회전 후 한칸 전진여부 확인, 전진할 수 있으면 전진
+    if arr[r-1][c] == 0 || arr[r+1][c] == 0 || arr[r][c-1] == 0 || arr[r][c+1] == 0 {
+        d = d == 0 ? 3 : d - 1
+        
+        switch d {
+        case 0 : r = arr[r-1][c] == 0 ? r - 1 : r
+        case 1 : c = arr[r][c+1] == 0 ? c + 1 : c
+        case 2 : r = arr[r+1][c] == 0 ? r + 1 : r
+        case 3 : c = arr[r][c-1] == 0 ? c - 1 : c
+        default: break
         }
     } 
-    if c + 1 < M {
-        if arr[r][c+1] == 0{
-            return true
+    // 청소 불가능할때, 후진 후 벽이라면 종료
+    else {
+        switch d {
+        case 0 : r += 1
+        case 1 : c -= 1
+        case 2 : r -= 1
+        case 3 : c += 1
+        default: break
+        }
+        
+        if arr[r][c] == 1 {
+            break
         }
     }
-    return false
 }
 
 print(answer)
