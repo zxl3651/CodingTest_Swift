@@ -1,63 +1,11 @@
 import Foundation
-class Deque<T: Equatable> {
-    var enqueue: [T]
-    var dequeue: [T] = []
-
-    var count: Int {
-        return enqueue.count + dequeue.count
-    }
-
-    var isEmpty: Bool {
-        return enqueue.isEmpty && dequeue.isEmpty
-    }
-
-    init(_ queue: [T]) {
-        enqueue = queue
-    }
-
-    func pushLast(_ element: T) {
-        enqueue.append(element)
-    }
-
-    func pushFirst(_ element: T) {
-        dequeue.append(element)
-    }
-    
-    func contains(_ element: T) -> Bool {
-        return enqueue.contains(element) || dequeue.contains(element)
-    }
-    
-    var first : T?{
-        dequeue.isEmpty ? enqueue.first : dequeue.last
-    }
-    
-    var last : T?{
-        enqueue.isEmpty ? dequeue.first : enqueue.last
-    }
-
-    func popLast() -> T {
-        if enqueue.isEmpty {
-            enqueue = dequeue.reversed()
-            dequeue.removeAll()
-        }
-        return enqueue.popLast()!
-    }
-
-    func popFirst() -> T {
-        if dequeue.isEmpty {
-            dequeue = enqueue.reversed()
-            enqueue.removeAll()
-        }
-        return dequeue.popLast()!
-    }
-}
 
 let n = Int(readLine()!)!
 let k = Int(readLine()!)!
 // 뱀이 움직이는 맵
 var map = [[Int]](repeating: [Int](repeating: 0, count: n), count: n)
 
-for i in 0..<k {
+for _ in 0..<k {
     let input = readLine()!.split(separator: " ").map{ Int($0)! }
     map[input[0] - 1][input[1] - 1] = 1
 }
@@ -79,7 +27,7 @@ var dy = [0, 1, 0, -1]
 var dx = [1, 0, -1, 0]
 var d = 0
 
-var snake = Deque([[0, 0]])
+var snake = [[0, 0]]
 
 while true {
     let head = snake.first!
@@ -97,7 +45,7 @@ while true {
     else if map[y][x] == 0 {
         _ = snake.popLast()
     }
-    snake.pushFirst([y, x])
+    snake.insert([y, x], at: 0)
     
     // x초가 끝난 뒤에 회전시킴
     if index < move.count {
