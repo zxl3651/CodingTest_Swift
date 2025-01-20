@@ -1,30 +1,32 @@
 import Foundation
 
-let N = Int(readLine()!)!
-var stack : [Int] = []
-for _ in 0..<N{
-    let command = readLine()!.split(separator: " ").map{ Int($0)! }
-    if command[0] == 1{
-        stack.append(command[1])
-    } else if command[0] == 2{
-        if stack.isEmpty{
-            print(-1)
-        } else {
-            print(stack.popLast()!)
-        }
-    } else if command[0] == 3{
-        print(stack.count)
-    } else if command[0] == 4{
-        if stack.isEmpty{
-            print(1)
-        } else {
-            print(0)
-        }
-    } else if command[0] == 5{
-        if stack.isEmpty{
-            print(-1)
-        } else {
-            print(stack.last!)
-        }
+struct stack {
+    var arr: [Int] = [Int]()
+    var count: Int { return arr.count }
+    var isEmpty: Int { return arr.isEmpty ? 1 : 0 }
+    var top: Int { return arr.isEmpty ? -1 : arr[arr.count - 1] }
+    
+    mutating func push(_ x: Int) {
+        arr.append(x)
+    }
+    
+    mutating func pop() -> Int {
+        return arr.isEmpty ? -1 : arr.popLast()!
+    }
+}
+
+var N = Int(readLine()!)!
+var s = stack()
+
+for i in 0..<N {
+    var input = readLine()!.split(separator: " ").map{ Int($0)! }
+    switch (input[0]) {
+    case 1: s.push(input[1])
+    case 2: print(s.pop())
+    case 3: print(s.count)
+    case 4: print(s.isEmpty)
+    case 5: print(s.top)
+    default:
+        break
     }
 }
